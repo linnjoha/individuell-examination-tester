@@ -7,7 +7,6 @@ import Input from "../components/Input/Input";
 
 function Confirmation() {
   const { state } = useLocation();
-
   const confirmation =
     state?.confirmationDetails ||
     JSON.parse(sessionStorage.getItem("confirmation"));
