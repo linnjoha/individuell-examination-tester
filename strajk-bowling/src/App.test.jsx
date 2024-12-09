@@ -4,10 +4,9 @@ import { describe, expect } from "vitest";
 
 describe("App", () => {
   it("should navigate and show a text of Inga bokning gjord! and then navigate back", () => {
-    const { container } = render(<App />);
+    render(<App />);
     const allImg = screen.getAllByRole("img");
     fireEvent.click(allImg[0]);
-
     const confirmationText = screen.getByText("Confirmation");
     expect(confirmationText).toBeDefined();
     fireEvent.click(confirmationText);
@@ -21,7 +20,6 @@ describe("App", () => {
     const { container } = render(<App />);
 
     const allInput = container.querySelectorAll(".input__field");
-    //ändrar input värden för att trigga fler spelare än tillåtna per bana
     const dateInput = allInput[0];
     fireEvent.change(dateInput, { target: { value: "2024-12-20" } });
     const timeInput = allInput[1];
@@ -41,6 +39,7 @@ describe("App", () => {
     fireEvent.click(buttons[1]);
 
     await waitFor(() => {}, { timeout: 3000 });
+    //navigates to confirmationpage
     expect(screen.getByText("Confirmation")).toBeInTheDocument();
     expect(screen.getByText("340 sek")).toBeInTheDocument();
     const allImg = screen.getAllByRole("img");
@@ -50,6 +49,9 @@ describe("App", () => {
     fireEvent.click(allImg[0]);
     const confirmationText = screen.getByText("Confirmation");
     fireEvent.click(confirmationText);
+    const allNewInput = container.querySelectorAll(".confirmation__input");
+    //kollar så att pris och bokningsnummer finns
+    expect(allNewInput[3].value).toBe("STR1540KHLU");
     expect(screen.getByText("340 sek")).toBeInTheDocument();
     screen.debug();
   });

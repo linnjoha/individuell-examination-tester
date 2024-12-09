@@ -96,6 +96,7 @@ describe("Booking", () => {
         <Booking />
       </RouterProvider>
     );
+    //fyller i input och lägger till skor utan att fylla iskostorlek
     const allInput = container.querySelectorAll(".input__field");
     fireEvent.change(allInput[0], { target: { value: "2024-12-20" } });
     fireEvent.change(allInput[1], { target: { value: "20:00" } });
@@ -112,6 +113,7 @@ describe("Booking", () => {
         <Booking />
       </RouterProvider>
     );
+    //fyller i input och lägger bara till ett par skor
     const allInput = container.querySelectorAll(".input__field");
     fireEvent.change(allInput[0], { target: { value: "2024-12-20" } });
     fireEvent.change(allInput[1], { target: { value: "20:00" } });
