@@ -1,10 +1,23 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "./App";
-import { describe, expect } from "vitest";
-
+import { describe, expect, vi } from "vitest";
+import Booking from "./views/Booking";
+import Confirmation from "./views/Confirmation";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
 describe("App", () => {
-  it("should navigate and show a text of Inga bokning gjord! and then navigate back", () => {
+  it("should render homepage", () => {
     render(<App />);
+    expect(screen.getByText("When, WHAT & Who")).toBeInTheDocument();
+  });
+  it("should navigate and show a text of Inga bokning gjord! and then navigate back", () => {
+    const routes = [
+      { path: "/", element: <Booking /> },
+      { path: "/confirmation", element: <Confirmation /> },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/"] });
+
+    render(<RouterProvider router={router} />);
+
     const allImg = screen.getAllByRole("img");
     fireEvent.click(allImg[0]);
     const confirmationText = screen.getByText("Confirmation");
@@ -17,7 +30,13 @@ describe("App", () => {
     expect(screen.getByText("Number of awesome bowlers")).toBeDefined();
   });
   it("Should book and navigate with right info and be able to navigate and the right info is still showing", async () => {
-    const { container } = render(<App />);
+    const routes = [
+      { path: "/", element: <Booking /> },
+      { path: "/confirmation", element: <Confirmation /> },
+    ];
+    const router = createMemoryRouter(routes, { initialEntries: ["/"] });
+
+    const { container } = render(<RouterProvider router={router} />);
 
     const allInput = container.querySelectorAll(".input__field");
     const dateInput = allInput[0];
