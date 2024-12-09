@@ -63,10 +63,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install modules
-        run: npm install
+        run: cd strajk-bowling && npm install
 
       - name: Build dist
-        run: npm run build
+        run: cd strajk-bowling && npm run build
 
       - name: Setup pages
         uses: actions/configure-pages@v3
@@ -74,7 +74,7 @@ jobs:
       - name: Upload dist folder
         uses: actions/upload-pages-artifact@v1
         with:
-          path: "./strajk-bowling/dist"
+          path: "/strajk-bowling/dist"
 
       - name: Deploy to Github Pages
         id: deployment

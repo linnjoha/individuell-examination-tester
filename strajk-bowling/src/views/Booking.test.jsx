@@ -40,11 +40,16 @@ describe("Booking", () => {
     expect(amountOfLanesInput.value).toBe("1");
   });
   it("should show warningtext Alla fälten måste vara ifyllda", () => {
-    render(
+    const { container } = render(
       <RouterProvider router={router}>
         <Booking />
       </RouterProvider>
     );
+    const allInput = container.querySelectorAll(".input__field");
+    fireEvent.change(allInput[0], { target: { value: "2024-12-20" } });
+    fireEvent.change(allInput[1], { target: { value: "20:00" } });
+    fireEvent.change(allInput[2], { target: { value: 1 } });
+
     const buttons = screen.getAllByRole("button");
     fireEvent.click(buttons[1]);
     expect(screen.getByText("Alla fälten måste vara ifyllda")).toBeDefined();
@@ -85,7 +90,7 @@ describe("Booking", () => {
       screen.getByText("Det får max vara 4 spelare per bana")
     ).toBeDefined();
   });
-  it("should show warning text Alla skor måste vara ifyllda or Antalet skor måste stämma överens med antal spelare", () => {
+  it("should show warning text Alla skor måste vara ifyllda", () => {
     const { container } = render(
       <RouterProvider router={router}>
         <Booking />
@@ -100,8 +105,23 @@ describe("Booking", () => {
     fireEvent.click(buttons[0]);
     fireEvent.click(buttons[1]);
     expect(screen.getByText("Alla skor måste vara ifyllda")).toBeDefined();
-    //ändrar antalet spelare för att trigga nästa varning
+  });
+  it("should show warningtext of Antalet skor måste stämma överens med antal spelare", () => {
+    const { container } = render(
+      <RouterProvider router={router}>
+        <Booking />
+      </RouterProvider>
+    );
+    const allInput = container.querySelectorAll(".input__field");
+    fireEvent.change(allInput[0], { target: { value: "2024-12-20" } });
+    fireEvent.change(allInput[1], { target: { value: "20:00" } });
     fireEvent.change(allInput[2], { target: { value: 2 } });
+    fireEvent.change(allInput[3], { target: { value: 1 } });
+    const buttons = screen.getAllByRole("button");
+    fireEvent.click(buttons[0]);
+    const shoeInput = container.querySelector(".shoes__input");
+    fireEvent.change(shoeInput, { target: { value: 40 } });
+    expect(shoeInput.value).toBe("40");
     fireEvent.click(buttons[1]);
     expect(
       screen.getByText("Antalet skor måste stämma överens med antal spelare")
